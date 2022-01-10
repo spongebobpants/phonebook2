@@ -46,8 +46,8 @@
 				<td><%=personList.get(i).getPersonId()%></td>
 			</tr>
 			<tr>
-				<td><a href="/WEB-INF/writeForm.jsp">update</a></td>
-				<!--<td><a href="./delete.jsp?id=<//%=personList.get(i).getPersonId()%>">delete</a></td>  -->
+				<td><a href="/phonebook2/pbc?action=updateForm&id=<%= personList.get(i).getPersonId() %>">update</a></td>
+				<td><a href="/phonebook2/pbc?action=delete&id=<%= personList.get(i).getPersonId() %>">delete</a></td>
 		</table>
 		<br>
 	
@@ -55,7 +55,7 @@
 	}
 	%>
 	
-	<a href ="/WEB-INF/writeForm.jsp">write Form</a>
+	<a href ="/phonebook2/pbc?action=writeForm"">write Form</a>
 	
 	<%-- } java code close --%>
 </body>

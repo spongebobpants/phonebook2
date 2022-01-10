@@ -27,6 +27,7 @@ public class PhonebookController extends HttpServlet {
 		String act = request.getParameter("action");
 		System.out.println(act);
 		//action=parameter get ex)action=list면 action
+//list
 		if("list".equals(act)) {
 			System.out.println("action=list");
 			//parameter 값 list 잘 가져왔는지 확인
@@ -42,17 +43,18 @@ public class PhonebookController extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/list.jsp");
 		rd.forward(request, response);
 		
-		//writeForm
+//writeForm
 		}else if("writeForm".equals(act)) {
 			//파라미터값이 writeForm과 같다면
 			System.out.println("action=writeForm");
 			//forward
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/writeForm.jsp");
 			rd.forward(request, response);
+//write
 		}else if("write".equals(act)) {
 			System.out.println("action=write");
 			
-			//parameter 3개를 꺼내온다
+			//parameter 4개를 꺼내온다
 			String name = request.getParameter("name");
 			String hp = request.getParameter("hp");
 			String company = request.getParameter("company");
@@ -68,6 +70,68 @@ public class PhonebookController extends HttpServlet {
 			phoneDao.personInsert(personVo);
 			
 			//forward 안 시키고 redirect (response에 넣어주기 )가 더 좋은 방법
+			//response.sendRedirect("/phonebook2/pbc?action=list");
+//updateForm
+		}else if("updateForm".equals(act)) {
+			System.out.println("action=update");
+			
+			//id 형변환
+			int id = Integer.parseInt(request.getParameter("id"));
+			
+
+//			숫자로 변경한 id로 대상 식별
+			PersonVo personVo = new PhoneDao().getPerson(id);
+			System.out.println("personVo 출력: "+personVo);
+			
+//			Action으로 넘어온 값을 변경시킨후 JSP 페이지로 넘겨주기
+			request.setAttribute("psnVo", personVo);
+			
+//			포워드 
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/updateForm.jsp");
+			rd.forward(request, response);
+
+			//response.sendRedirect("/phonebook2/pbc?action=list");
+//update			
+		}else if("update".equals(act)) {
+			System.out.println("action=update");
+			
+			//String id = request.getParameter("id");
+			String name = request.getParameter("name");
+			String hp = request.getParameter("hp");
+			String company = request.getParameter("company");
+			
+			//형변환
+			int personId = Integer.parseInt(request.getParameter("id"));
+			System.out.println("수정할번호 "+personId);
+			//vo
+			PersonVo personVo = new PersonVo(personId, name, hp, company);
+			System.out.println(personVo);
+
+			//dao 메모리 올린다
+			PhoneDao phoneDao = new PhoneDao();
+
+			//query
+			phoneDao.personUpdate(personVo);
+			
+			//
+			//response.sendRedirect("/phonebook2/pbc?action=list");
+			
+//delete
+		}else if("delete".equals(act)){
+			//파라미터값이 delete와 같다면
+			System.out.println("action=delete");
+			
+			//id
+			String id = request.getParameter("id");
+			//parameter 꺼내온다
+			int personId =Integer.parseInt(request.getParameter("id"));
+			
+			//dao 메모리 올린다
+			PhoneDao phoneDao = new PhoneDao();
+			
+			//dao.deleter(Id)
+			phoneDao.personDelete(personId);
+			
 			response.sendRedirect("/phonebook2/pbc?action=list");
 			
 			
